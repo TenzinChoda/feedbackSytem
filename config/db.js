@@ -7,12 +7,14 @@ const pgp = pgpInit();
 
 
 const db = pgp({
-    host: 'localhost',
-    port: process.env.DB_PORT,
+    host: process.env.DB_HOST,
+    port: 5432, // default port for PostgreSQL
     database: process.env.DB_NAME,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
-    ssl: false,
+    ssl: {
+        rejectUnauthorized: false, // Set to true if you want to reject unauthorized SSL connections
+}
 })
 
 
