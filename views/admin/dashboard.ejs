@@ -3,106 +3,130 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Dashboard - Sherubtse Semester Registration</title>
+  <title>Admin Dashboard - Feedback System</title>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #ffffff;
+      background: linear-gradient(135deg, #e0e7ff 0%, #f8fafc 100%);
+      min-height: 100vh;
     }
-
-
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 3px solid #0078d4;
-      padding: 15px 30px;
-      background-color: white;
+      border-bottom: 2px solid #6366f1;
+      padding: 18px 40px;
+      background: #fff;
     }
-
-
-    .header-left {
-      display: flex;
-      align-items: center;
+    .header-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #6366f1;
+      letter-spacing: 1px;
     }
-
-
-    .logo {
-      width: 50px;
-      height: 50px;
-      margin-right: 15px;
-    }
-
-
     .nav-links {
       font-weight: 600;
     }
-
-
-    .main-content {
-      padding: 50px;
-      background-color: #000000;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-
-    .dashboard-card {
-      background-color: white;
-      border-radius: 10px;
-      padding: 30px;
-      width: 100%;
-      max-width: 600px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-
-
-    .dashboard-card h2 {
-      margin-bottom: 25px;
-    }
-
-
     .btn-logout {
-      margin-top: 30px;
-      padding: 12px 25px;
-      background-color: #000000;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
+      padding: 10px 20px;
+      background: #6366f1;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       text-decoration: none;
-      display: inline-block;
+      margin-left: 10px;
+      transition: background 0.2s;
+    }
+    .btn-logout:hover {
+      background: #4f46e5;
+    }
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 0;
+      min-height: 80vh;
+    }
+    .dashboard-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 2.5rem 2rem 2rem 2rem;
+      max-width: 900px;
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+    .dashboard-card h2 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #3b3b3b;
+      margin-bottom: 1.2rem;
+      text-align: center;
+    }
+    .feedback-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+    }
+    .feedback-table th, .feedback-table td {
+      border: 1px solid #e5e7eb;
+      padding: 0.7rem 1rem;
+      text-align: left;
+    }
+    .feedback-table th {
+      background: #f3f4f6;
+      color: #6366f1;
+      font-weight: 700;
+    }
+    .feedback-table td {
+      color: #333;
     }
   </style>
 </head>
 <body>
   <header class="header">
-    <div class="header-left">
-      <img src="/img/logo.jpg" alt="Logo" class="logo" />
-      <h2>Sherubtse Restro</h2>
-    </div>
+    <div class="header-title">Feedback System</div>
     <div class="nav-links">
-      <a href="/admin/dashboard" class="btn-logout">Home</a>
-        <a href="/admin/food" class="btn-logout">Food</a>
       <a href="/logout" class="btn-logout">Logout</a>
     </div>
   </header>
-
-
   <main class="main-content">
     <div class="dashboard-card">
-      <h2>Welcome, Admin!</h2>
-      <p>This is your dashboard where you can manage the system.</p>
-      <!-- Add admin-specific content here -->
-
-
-     
+      <h2>All Feedback Details</h2>
+      <table class="feedback-table">
+        <thead>
+          <tr>
+            <th>Module</th>
+            <th>Feedback</th>
+            <th>Rating</th>
+            <th>Date</th>
+            <th>Student Name</th>
+            <th>Student Email</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% feedbacks.forEach(function(feedback) { %>
+            <tr>
+              <td><%= feedback.subject %></td>
+              <td><%= feedback.feedbacktext %></td>
+              <td><%= feedback.rating ? feedback.rating : '-' %></td>
+              <td><%= feedback.createdat ? feedback.createdat.toLocaleDateString() : '-' %></td>
+              <td><%= feedback.studentname %></td>
+              <td><%= feedback.studentemail %></td>
+              <td>
+                <form action="/admin/delete-feedback/<%= feedback.id %>" method="POST" style="display:inline;">
+                  <button type="submit" class="btn-logout" onclick="return confirm('Are you sure you want to delete this feedback?')">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
     </div>
   </main>
 </body>
